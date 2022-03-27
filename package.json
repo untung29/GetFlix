@@ -17,6 +17,9 @@
   "author": "this-is-undefined",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "typescript": "^4.3.5"

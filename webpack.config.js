@@ -17,7 +17,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'src'),
     hot: true,
-    port: 3000,
+    port: 3001,
   },
   module: {
     rules: [
@@ -35,6 +35,7 @@ module.exports = {
         test: /\.(jpg|jpeg|png|gif|mp3|svg|webp|ico)$/,
         use: ['file-loader'],
       },
+      {},
     ],
   },
   plugins: [
@@ -43,7 +44,6 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
     }),
-    new EnvironmentPlugin({
-    }),
+    new EnvironmentPlugin({}),
   ],
 };
