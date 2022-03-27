@@ -20,8 +20,10 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.5.2",
+    "axios": "^0.26.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-query": "^3.34.18",
     "typescript": "^4.3.5"
   },
   "devDependencies": {

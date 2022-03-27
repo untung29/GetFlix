@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { TextField } from '@mui/material';
+import useGetMovies from 'hooks/useGetMovies';
 
 export default () => {
+  const data = useGetMovies('we');
+  console.log(data);
+
   const LandingCover = styled.div`
     background-image: url('./images/cover.jpg');
     background-position: center;
@@ -36,6 +40,8 @@ export default () => {
     align-items: center;
     flex-direction: column;
   `;
+
+  // console.log(data);
 
   return (
     <LandingCover>
