@@ -7,6 +7,10 @@ const Logo = styled.h1`
   margin-top: 0.5rem;
   font-family: 'Helvetica' sans-serif;
   position: absolute;
+  @media (max-width: 768px) {
+    font-size: 3rem;
+    margin: 0;
+  }
 `;
 
 export default Logo;

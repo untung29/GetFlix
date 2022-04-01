@@ -7,9 +7,9 @@ const TextInput = ({ label, isLanding }: { label: string; isLanding: boolean }):
     variant="filled"
     style={{
       backgroundColor: 'white',
-      width: isLanding ? '25%' : '10%',
       borderRadius: '1rem',
     }}
+    fullWidth={isLanding}
     InputProps={{ disableUnderline: true }}
   />
 );
