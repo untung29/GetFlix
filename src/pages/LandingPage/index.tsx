@@ -1,28 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { TextField } from '@mui/material';
+
+// Components
 import useGetMovies from 'hooks/useGetMovies';
+import Logo from 'components/Logo';
+import TextInput from 'components/TextInput';
+import LandingCover from 'components/LandingCover';
 
 export default () => {
   const data = useGetMovies('we');
   console.log(data);
-
-  const LandingCover = styled.div`
-    background-image: url('./images/cover.jpg');
-    background-position: center;
-    background-size: cover;
-    height: 100vh;
-    display: flex;
-  `;
-
-  const Logo = styled.h1`
-    color: #ff0404;
-    font-size: 4rem;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
-    font-family: 'Helvetica';
-    /* position: absolute; */
-  `;
 
   const H2Text = styled.h2`
     text-align: center;
@@ -41,22 +28,12 @@ export default () => {
     flex-direction: column;
   `;
 
-  // console.log(data);
-
   return (
     <LandingCover>
       <Logo>Getflix</Logo>
       <MiddleContainer>
         <H2Text>Get unlimited information about your favorite movies, and more.</H2Text>
-        <TextField
-          label="Movie name"
-          variant="filled"
-          style={{
-            backgroundColor: 'white',
-            width: '25%',
-          }}
-          InputProps={{ disableUnderline: true }}
-        />
+        <TextInput label="Movie name" isLanding />
       </MiddleContainer>
     </LandingCover>
   );
