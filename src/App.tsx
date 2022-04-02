@@ -1,15 +1,20 @@
 import LandingPage from 'pages/LandingPage';
+import SearchResultPage from 'pages/SearchResultPage';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-// import styled from '@emotion/styled';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* <h1 className="logo">Getflix</h1> */}
-      <LandingPage />
-    </QueryClientProvider>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/search" element={<SearchResultPage />} />
+        </Routes>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 }

@@ -1,5 +1,6 @@
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import React, { ReactElement } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 
 const TextInput = ({ label, isLanding }: { label: string; isLanding: boolean }): ReactElement => (
   <TextField
@@ -10,7 +11,14 @@ const TextInput = ({ label, isLanding }: { label: string; isLanding: boolean }):
       borderRadius: '1rem',
     }}
     fullWidth={isLanding}
-    InputProps={{ disableUnderline: true }}
+    InputProps={{
+      disableUnderline: true,
+      endAdornment: (
+        <IconButton onClick={() => {}}>
+          <SearchIcon />
+        </IconButton>
+      ),
+    }}
   />
 );
 
