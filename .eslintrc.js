@@ -4,10 +4,7 @@ module.exports = {
     es2021: true,
     jest: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
+  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -16,11 +13,10 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-  ],
+  plugins: ['react', '@typescript-eslint'],
   rules: {
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/jsx-props-no-spreading': [0, {}],
     'import/extensions': [0, {}],
@@ -30,13 +26,9 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': [0, {}],
     'max-len': [0, {}],
     'import/no-extraneous-dependencies': [
-      'error', {
-        devDependencies: [
-          '**/*.test.ts',
-          '**/*.test.tsx',
-          '**/*.test.js',
-          '**/*.test.jsx',
-        ],
+      'error',
+      {
+        devDependencies: ['**/*.test.ts', '**/*.test.tsx', '**/*.test.js', '**/*.test.jsx'],
       },
     ],
   },

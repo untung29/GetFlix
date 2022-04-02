@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Logo from 'components/Logo';
 import TextInput from 'components/TextInput';
-import React from 'react';
+import React, { useState } from 'react';
 
 const SearchResultPage = () => {
   const SearchResultContainer = styled.div`
@@ -12,6 +12,18 @@ const SearchResultPage = () => {
     display: flex;
     justify-content: space-around;
   `;
+  const [title, setTitle] = useState('');
+
+  const onSetTitle = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setTitle(e.target.value);
+  };
+  console.log(title);
+
+  const onSearchTitle = () => {
+    //
+  };
+  // const navigate = useNavigate();
+  // const searchResults = useGetMovies();
 
   return (
     <SearchResultContainer>
@@ -19,7 +31,7 @@ const SearchResultPage = () => {
         <div>
           <Logo>Getflix</Logo>
         </div>
-        <TextInput label="Search your movie" isLanding={false} />
+        <TextInput value={title} onChange={onSetTitle} onEnter={onSearchTitle} label="Search your movie" isLanding={false} />
       </TopContainer>
     </SearchResultContainer>
   );

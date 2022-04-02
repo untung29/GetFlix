@@ -1,42 +1,38 @@
 import { IconButton, TextField } from '@mui/material';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate } from 'react-router-dom';
 
-const TextInput = ({ label, isLanding }: { label: string; isLanding: boolean }): ReactElement => {
-  const navigate = useNavigate();
-  const [title, setTitle] = useState('');
+interface TextInputProps {
+  label: string;
+  isLanding: boolean;
+  onEnter: () => void;
+  onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+}
 
-  const onSetTitle = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setTitle(e.target.value);
-  };
-
-  const onSearchTitle = () => {
-    navigate({ pathname: '/search', search: `?t=${title}` });
-  };
-
+const TextInput = ({ value, label, isLanding, onEnter, onChange }: TextInputProps): ReactElement => {
+  console.log(value);
   return (
     <TextField
-      onChange={onSetTitle}
+      autoFocus
+      id="set-title"
+      value={value}
+      onChange={onChange}
       label={label}
       variant="filled"
-      style={{
-        backgroundColor: 'white',
-        borderRadius: '1rem',
-        marginTop: '0.5rem',
-      }}
+      style={{ backgroundColor: 'white', borderRadius: '1rem', marginTop: '0.5rem' }}
       fullWidth={isLanding}
       InputProps={{
         disableUnderline: true,
         endAdornment: (
-          <IconButton onClick={onSearchTitle}>
+          <IconButton onClick={onEnter}>
             <SearchIcon />
           </IconButton>
         ),
       }}
       onKeyPress={(e): void => {
         if (e.key === 'Enter') {
-          onSearchTitle();
+          onEnter();
         }
       }}
     />
