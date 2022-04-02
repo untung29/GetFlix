@@ -23,6 +23,7 @@ const TextInput = ({ label, isLanding }: { label: string; isLanding: boolean }):
       style={{
         backgroundColor: 'white',
         borderRadius: '1rem',
+        marginTop: '0.5rem',
       }}
       fullWidth={isLanding}
       InputProps={{

@@ -6,11 +6,11 @@ const Logo = styled.h1`
   margin-left: 1rem;
   margin-top: 0.5rem;
   font-family: 'Helvetica';
-  position: absolute;
   @media (max-width: 768px) {
     font-size: 3rem;
     margin: 0;
   }
+  position: absolute;
 `;
 
 export default Logo;
