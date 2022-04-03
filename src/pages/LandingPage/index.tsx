@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 // Components
 import Logo from 'components/Logo';
+import Box from '@mui/material/Box';
 import TextInput from 'components/TextInput';
 import LandingCover from 'components/LandingCover';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +22,9 @@ export default () => {
 
   return (
     <LandingCover>
-      <Logo>Getflix</Logo>
+      <Box sx={{ position: 'absolute', marginLeft: '1rem' }}>
+        <Logo>Getflix</Logo>
+      </Box>
       <Container>
         <MiddleContainer>
           <H2Text>Get unlimited information about your favorite movies, and more.</H2Text>
