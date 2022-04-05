@@ -7,9 +7,10 @@ import Fade from '@mui/material/Fade';
 interface ModalProps {
   isOpen: boolean;
   handleClose: () => void;
+  imdbId: string;
 }
 
-const CustomModal = ({ isOpen, handleClose }: ModalProps): ReactElement => {
+const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement => {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -24,6 +25,8 @@ const CustomModal = ({ isOpen, handleClose }: ModalProps): ReactElement => {
     },
     overflow: 'scroll',
   };
+
+  console.log(imdbId);
 
   return (
     <Modal open={isOpen} onClose={handleClose} closeAfterTransition>

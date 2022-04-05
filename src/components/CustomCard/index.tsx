@@ -9,14 +9,15 @@ import Button from '@mui/material/Button';
 import NoPoster from '../../images/no-poster.png';
 
 interface CustomCardProps {
+  imdbId: string;
   poster: string;
   title: string;
   type: string;
   year: string;
-  onOpenDetailModal: () => void;
+  onOpenDetailModal: (_id: string) => void;
 }
 
-const CustomCard = ({ poster, title, type, year, onOpenDetailModal }: CustomCardProps) => (
+const CustomCard = ({ imdbId, poster, title, type, year, onOpenDetailModal }: CustomCardProps) => (
   <Card sx={{ width: '100%' }}>
     <CardMedia component="img" height="250" image={poster === 'N/A' ? NoPoster : poster} alt={title} />
     <CardContent>
@@ -28,7 +29,12 @@ const CustomCard = ({ poster, title, type, year, onOpenDetailModal }: CustomCard
         </div>
       </Box>
       <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button size="small" onClick={onOpenDetailModal}>
+        <Button
+          size="small"
+          onClick={() => {
+            onOpenDetailModal(imdbId);
+          }}
+        >
           More detail
         </Button>
       </CardActions>

@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { useQuery } from 'react-query';
 
 interface Movie {
+  imdbID: string;
   Title: string;
   Year: string;
   Type: string;

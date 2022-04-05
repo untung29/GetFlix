@@ -12,6 +12,8 @@ import { SearchResultContainer, TopContainer } from './SearchResultPage.styled';
 const SearchResultPage = () => {
   const [title, setTitle] = useState('');
   const [searchParams] = useSearchParams();
+  const [selectedImdbId, setSelectedImdbId] = useState('');
+
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const navigate = useNavigate();
   const onSetTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,8 +24,9 @@ const SearchResultPage = () => {
     setOpenDetailModal(false);
   };
 
-  const onOpenDetailModal = () => {
+  const onOpenDetailModal = (id: string) => {
     setOpenDetailModal(true);
+    setSelectedImdbId(id);
   };
 
   const { data, fetching } = useGetMovies(searchParams.get('t'));
@@ -57,12 +60,13 @@ const SearchResultPage = () => {
                 title={movie.Title}
                 type={movie.Type}
                 year={movie.Year}
+                imdbId={movie.imdbID}
               />
             </Grid>
           ))}
         </Grid>
       </Box>
-      <CustomModal isOpen={openDetailModal} handleClose={onCloseDetailModal} />
+      <CustomModal imdbId={selectedImdbId} isOpen={openDetailModal} handleClose={onCloseDetailModal} />
     </SearchResultContainer>
   );
 };
