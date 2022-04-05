@@ -3,6 +3,9 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
+import useGetMovieById from 'hooks/useGetMovieById';
+import { CardMedia } from '@mui/material';
+import NoPoster from '../../images/no-poster.png';
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,13 +22,14 @@ const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement 
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    maxHeight: 400,
+    maxHeight: 450,
     '@media (max-width: 768px)': {
       width: '70%',
     },
     overflow: 'scroll',
   };
 
+  const { movieDetail } = useGetMovieById(imdbId);
   console.log(imdbId);
 
   return (
@@ -34,45 +38,39 @@ const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement 
         <Box sx={style}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Twilight (136 min)
+              {`${movieDetail?.Title} (${movieDetail?.Runtime})`}
             </Typography>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              2008
+              {movieDetail?.Year}
             </Typography>
           </Box>
           <hr />
-          <Typography id="transition-modal-description" sx={{ color: '#A8A8A8' }}>
-            Plot
-          </Typography>
-          <Typography>
-            The Guardians struggle to keep together as a team while dealing with their personal family issues, notably encounter with his
-            father the ambitious celestial being Ego.
-          </Typography>
 
-          <Typography id="transition-modal-description" sx={{ color: '#A8A8A8', marginTop: '1rem' }}>
-            Genre
-          </Typography>
-          <Typography>Action, Adventure, Comedy</Typography>
+          <CardMedia
+            sx={{ maxWidth: 200, marginBottom: '1rem' }}
+            component="img"
+            height="250"
+            image={movieDetail?.Poster === 'N/A' ? NoPoster : movieDetail?.Poster}
+            alt={movieDetail?.Title}
+          />
 
-          <Typography id="transition-modal-description" sx={{ color: '#A8A8A8', marginTop: '1rem' }}>
-            Cast
-          </Typography>
-          <Typography>Robert Pattinson, Kristen Stewart</Typography>
+          <Typography sx={{ color: '#A8A8A8' }}>Plot</Typography>
+          <Typography>{movieDetail?.Plot}</Typography>
 
-          <Typography id="transition-modal-description" sx={{ color: '#A8A8A8', marginTop: '1rem' }}>
-            Release Date
-          </Typography>
-          <Typography>01 January 2018</Typography>
+          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Genre</Typography>
+          <Typography>{movieDetail?.Genre}</Typography>
 
-          <Typography id="transition-modal-description" sx={{ color: '#A8A8A8', marginTop: '1rem' }}>
-            Awards
-          </Typography>
-          <Typography>Nominated for 1 Oscar. 15 wins & 59 nominations total</Typography>
+          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Cast</Typography>
+          <Typography> {movieDetail?.Actors}</Typography>
 
-          <Typography id="transition-modal-description" sx={{ color: '#A8A8A8', marginTop: '1rem' }}>
-            IMDB Rating
-          </Typography>
-          <Typography>7.6</Typography>
+          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Release Date</Typography>
+          <Typography>{movieDetail?.Released}</Typography>
+
+          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Awards</Typography>
+          <Typography>{movieDetail?.Awards}</Typography>
+
+          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>IMDB Rating</Typography>
+          <Typography>{movieDetail?.imdbRating}</Typography>
         </Box>
       </Fade>
     </Modal>

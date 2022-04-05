@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const getMovieById = async (id: string) => {
-  const getMovies = await axios.get(`https://www.omdbapi.com/?apikey=320f6ab2&i=${id}`);
-  return getMovies.data.Search;
+  const getMovie = await axios.get(`https://www.omdbapi.com/?apikey=320f6ab2&i=${id}`);
+  return getMovie.data;
 };
 
 export default getMovieById;
