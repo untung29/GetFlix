@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import useGetMovieById from 'hooks/useGetMovieById';
-import { CardMedia } from '@mui/material';
+import { CardMedia, CircularProgress } from '@mui/material';
 import NoPoster from '../../images/no-poster.png';
 
 interface ModalProps {
@@ -29,48 +29,53 @@ const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement 
     overflow: 'scroll',
   };
 
-  const { movieDetail } = useGetMovieById(imdbId);
-  console.log(imdbId);
+  const { movieDetail, isLoading } = useGetMovieById(imdbId);
 
   return (
     <Modal open={isOpen} onClose={handleClose} closeAfterTransition>
       <Fade in={isOpen}>
         <Box sx={style}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              {`${movieDetail?.Title} (${movieDetail?.Runtime})`}
-            </Typography>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              {movieDetail?.Year}
-            </Typography>
-          </Box>
-          <hr />
+          {isLoading ? (
+            <CircularProgress color="inherit" />
+          ) : (
+            <Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography id="transition-modal-title" variant="h6" component="h2">
+                  {`${movieDetail?.Title} (${movieDetail?.Runtime})`}
+                </Typography>
+                <Typography id="transition-modal-title" variant="h6" component="h2">
+                  {movieDetail?.Year}
+                </Typography>
+              </Box>
+              <hr />
 
-          <CardMedia
-            sx={{ maxWidth: 200, marginBottom: '1rem' }}
-            component="img"
-            height="250"
-            image={movieDetail?.Poster === 'N/A' ? NoPoster : movieDetail?.Poster}
-            alt={movieDetail?.Title}
-          />
+              <CardMedia
+                sx={{ maxWidth: 200, marginBottom: '1rem' }}
+                component="img"
+                height="250"
+                image={movieDetail?.Poster === 'N/A' ? NoPoster : movieDetail?.Poster}
+                alt={movieDetail?.Title}
+              />
 
-          <Typography sx={{ color: '#A8A8A8' }}>Plot</Typography>
-          <Typography>{movieDetail?.Plot}</Typography>
+              <Typography sx={{ color: '#A8A8A8' }}>Plot</Typography>
+              <Typography>{movieDetail?.Plot}</Typography>
 
-          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Genre</Typography>
-          <Typography>{movieDetail?.Genre}</Typography>
+              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Genre</Typography>
+              <Typography>{movieDetail?.Genre}</Typography>
 
-          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Cast</Typography>
-          <Typography> {movieDetail?.Actors}</Typography>
+              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Cast</Typography>
+              <Typography> {movieDetail?.Actors}</Typography>
 
-          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Release Date</Typography>
-          <Typography>{movieDetail?.Released}</Typography>
+              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Release Date</Typography>
+              <Typography>{movieDetail?.Released}</Typography>
 
-          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Awards</Typography>
-          <Typography>{movieDetail?.Awards}</Typography>
+              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Awards</Typography>
+              <Typography>{movieDetail?.Awards}</Typography>
 
-          <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>IMDB Rating</Typography>
-          <Typography>{movieDetail?.imdbRating}</Typography>
+              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>IMDB Rating</Typography>
+              <Typography>{movieDetail?.imdbRating}</Typography>
+            </Box>
+          )}
         </Box>
       </Fade>
     </Modal>
