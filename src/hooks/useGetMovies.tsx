@@ -1,6 +1,6 @@
 import getMoviesByTitle from 'API/getMoviesByTitle';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useQuery } from 'react-query';
+import { InfiniteData, useInfiniteQuery } from 'react-query';
 
 interface Movie {
   imdbID: string;
@@ -10,24 +10,48 @@ interface Movie {
   Poster: string;
 }
 
+interface MovieResponse {
+  searchResults: Movie[];
+  totalPage: number;
+  nextPage: number;
+  totalSearches: number;
+}
+
 const useGetMovies = (
   title: string | null,
-): { data: Movie[] | undefined; fetching: Dispatch<SetStateAction<boolean>>; isLoading: boolean } => {
+): {
+  data: InfiniteData<MovieResponse | undefined> | undefined;
+  fetching: Dispatch<SetStateAction<boolean>>;
+  isLoading: boolean;
+  hasNextPage: boolean;
+  fetchNextPage: () => void;
+} => {
   const [isFetching, setIsFetching] = useState(false);
-  const { data, isLoading } = useQuery<Movie[]>(
-    ['getMoviesByTitle', title],
-    async () => {
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery<MovieResponse | undefined>(
+    'getMoviesByTitle',
+    ({ pageParam = 1 }) => {
       if (!title) {
-        return [];
+        return undefined;
       }
-      const movies = await getMoviesByTitle(title);
-      setIsFetching(false);
-      return movies;
+      return getMoviesByTitle(pageParam);
     },
-    { enabled: isFetching && !!title },
+    {
+      getNextPageParam: (lastPage, _allPages) => {
+        if (!lastPage) {
+          return undefined;
+        }
+
+        if (lastPage.nextPage > lastPage.totalPage) {
+          return undefined;
+        }
+
+        return lastPage.nextPage > lastPage.totalPage ? undefined : lastPage.nextPage;
+      },
+      enabled: isFetching && !!title,
+    },
   );
 
-  return { data, isLoading, fetching: setIsFetching };
+  return { data, isLoading, fetching: setIsFetching, hasNextPage: hasNextPage || false, fetchNextPage };
 };
 
 export default useGetMovies;

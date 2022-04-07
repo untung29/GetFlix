@@ -41,7 +41,7 @@ const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement 
             <Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography id="transition-modal-title" variant="h6" component="h2">
-                  {`${movieDetail?.Title} (${movieDetail?.Runtime})`}
+                  {`${movieDetail?.Title}`}
                 </Typography>
                 <Typography id="transition-modal-title" variant="h6" component="h2">
                   {movieDetail?.Year}

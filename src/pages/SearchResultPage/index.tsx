@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import CustomModal from 'components/CustomModal';
 import { CircularProgress, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import CustomCard from 'components/CustomCard';
 import Logo from 'components/Logo';
 import TextInput from 'components/TextInput';
@@ -29,8 +31,7 @@ const SearchResultPage = () => {
     setSelectedImdbId(id);
   };
 
-  const { data, fetching, isLoading } = useGetMovies(searchParams.get('t'));
-
+  const { data, fetching, isLoading, hasNextPage, fetchNextPage } = useGetMovies(searchParams.get('t'));
   const onSearchTitle = () => {
     navigate({ pathname: '/search', search: `?t=${title}` });
     fetching(true);
@@ -41,6 +42,13 @@ const SearchResultPage = () => {
       fetching(true);
     }
   }, []);
+
+  const totalData = data?.pages.reduce((acc, totalSearches) => {
+    if (totalSearches) {
+      return acc + totalSearches?.searchResults.length;
+    }
+    return acc;
+  }, 0);
 
   return (
     <SearchResultContainer>
@@ -56,20 +64,43 @@ const SearchResultPage = () => {
             <CircularProgress color="info" />
           </Box>
         ) : (
-          <Grid container spacing={2}>
-            {data?.map(movie => (
-              <Grid item lg={2} md={3} sm={6} xs={12}>
-                <CustomCard
-                  onOpenDetailModal={onOpenDetailModal}
-                  poster={movie.Poster}
-                  title={movie.Title}
-                  type={movie.Type}
-                  year={movie.Year}
-                  imdbId={movie.imdbID}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          <InfiniteScroll
+            hasMore={hasNextPage}
+            next={fetchNextPage}
+            dataLength={totalData || 0}
+            loader={<h1>Waiting...</h1>}
+            pullDownToRefreshThreshold={50}
+          >
+            <Grid container spacing={2}>
+              {data?.pages.map(page =>
+                page?.searchResults.map(movie => (
+                  <Grid item lg={2} md={3} sm={6} xs={12}>
+                    <CustomCard
+                      onOpenDetailModal={onOpenDetailModal}
+                      poster={movie?.Poster}
+                      title={movie?.Title}
+                      type={movie?.Type}
+                      year={movie?.Year}
+                      imdbId={movie?.imdbID}
+                    />
+                  </Grid>
+                )),
+              )}
+
+              {/* {data?.pages[0]?.searchResults.map(movie => (
+                <Grid item lg={2} md={3} sm={6} xs={12}>
+                  <CustomCard
+                    onOpenDetailModal={onOpenDetailModal}
+                    poster={movie?.Poster}
+                    title={movie?.Title}
+                    type={movie?.Type}
+                    year={movie?.Year}
+                    imdbId={movie?.imdbID}
+                  />
+                </Grid>
+              ))} */}
+            </Grid>
+          </InfiniteScroll>
         )}
       </Box>
       <CustomModal imdbId={selectedImdbId} isOpen={openDetailModal} handleClose={onCloseDetailModal} />
