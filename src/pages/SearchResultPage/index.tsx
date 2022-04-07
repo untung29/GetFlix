@@ -68,7 +68,11 @@ const SearchResultPage = () => {
             hasMore={hasNextPage}
             next={fetchNextPage}
             dataLength={totalData || 0}
-            loader={<h1>Waiting...</h1>}
+            loader={
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 100 }}>
+                <CircularProgress color="info" />
+              </Box>
+            }
             pullDownToRefreshThreshold={50}
           >
             <Grid container spacing={2}>
@@ -86,19 +90,6 @@ const SearchResultPage = () => {
                   </Grid>
                 )),
               )}
-
-              {/* {data?.pages[0]?.searchResults.map(movie => (
-                <Grid item lg={2} md={3} sm={6} xs={12}>
-                  <CustomCard
-                    onOpenDetailModal={onOpenDetailModal}
-                    poster={movie?.Poster}
-                    title={movie?.Title}
-                    type={movie?.Type}
-                    year={movie?.Year}
-                    imdbId={movie?.imdbID}
-                  />
-                </Grid>
-              ))} */}
             </Grid>
           </InfiniteScroll>
         )}
