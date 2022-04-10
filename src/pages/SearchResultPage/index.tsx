@@ -15,7 +15,6 @@ const SearchResultPage = () => {
   const [title, setTitle] = useState('');
   const [searchParams] = useSearchParams();
   const [selectedImdbId, setSelectedImdbId] = useState('');
-
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const navigate = useNavigate();
   const onSetTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +30,7 @@ const SearchResultPage = () => {
     setSelectedImdbId(id);
   };
 
-  const { data, fetching, isLoading, hasNextPage, fetchNextPage } = useGetMovies(searchParams.get('t'));
+  const { data, fetching, isLoading, hasNextPage, fetchNextPage, isFetching } = useGetMovies(searchParams.get('t'));
   const onSearchTitle = () => {
     navigate({ pathname: '/search', search: `?t=${title}` });
     fetching(true);
@@ -39,6 +38,7 @@ const SearchResultPage = () => {
 
   useEffect(() => {
     if (searchParams.get('t')) {
+      // Set the title based on the params
       fetching(true);
     }
   }, []);
@@ -50,6 +50,8 @@ const SearchResultPage = () => {
     return acc;
   }, 0);
 
+  console.log(isFetching);
+
   return (
     <SearchResultContainer>
       <TopContainer>
@@ -59,7 +61,7 @@ const SearchResultPage = () => {
         <TextInput key="1" value={title} onChange={onSetTitle} onEnter={onSearchTitle} label="Search your movie" isLanding={false} />
       </TopContainer>
       <Box sx={{ padding: '2rem 3rem' }}>
-        {isLoading ? (
+        {isLoading || (isFetching && data?.pages.length === 0) ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <CircularProgress color="info" />
           </Box>
@@ -86,6 +88,7 @@ const SearchResultPage = () => {
                       type={movie?.Type}
                       year={movie?.Year}
                       imdbId={movie?.imdbID}
+                      key={movie?.Title}
                     />
                   </Grid>
                 )),

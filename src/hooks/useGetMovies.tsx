@@ -25,15 +25,17 @@ const useGetMovies = (
   isLoading: boolean;
   hasNextPage: boolean;
   fetchNextPage: () => void;
+  isFetching: boolean;
 } => {
-  const [isFetching, setIsFetching] = useState(false);
-  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery<MovieResponse | undefined>(
+  const [fetching, setFetching] = useState(false);
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetching } = useInfiniteQuery<MovieResponse | undefined>(
     'getMoviesByTitle',
     ({ pageParam = 1 }) => {
       if (!title) {
         return undefined;
       }
-      return getMoviesByTitle(pageParam);
+      setFetching(false);
+      return getMoviesByTitle(title, pageParam);
     },
     {
       getNextPageParam: (lastPage, _allPages) => {
@@ -47,11 +49,11 @@ const useGetMovies = (
 
         return lastPage.nextPage > lastPage.totalPage ? undefined : lastPage.nextPage;
       },
-      enabled: isFetching && !!title,
+      enabled: fetching && !!title,
     },
   );
 
-  return { data, isLoading, fetching: setIsFetching, hasNextPage: hasNextPage || false, fetchNextPage };
+  return { data, isLoading, fetching: setFetching, hasNextPage: hasNextPage || false, fetchNextPage, isFetching };
 };
 
 export default useGetMovies;

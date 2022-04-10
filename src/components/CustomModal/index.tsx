@@ -6,6 +6,7 @@ import Fade from '@mui/material/Fade';
 import useGetMovieById from 'hooks/useGetMovieById';
 import { CardMedia, CircularProgress } from '@mui/material';
 import NoPoster from '../../images/no-poster.png';
+import { centeredComponent, modalStyle, textColor, textSpace } from './CustomModal.styles';
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,36 +15,23 @@ interface ModalProps {
 }
 
 const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement => {
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    maxHeight: 450,
-    '@media (max-width: 768px)': {
-      width: '70%',
-    },
-    overflow: 'scroll',
-  };
-
   const { movieDetail, isLoading } = useGetMovieById(imdbId);
 
   return (
     <Modal open={isOpen} onClose={handleClose} closeAfterTransition>
       <Fade in={isOpen}>
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           {isLoading ? (
-            <CircularProgress color="inherit" />
+            <Box sx={centeredComponent}>
+              <CircularProgress color="inherit" />
+            </Box>
           ) : (
             <Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography id="transition-modal-title" variant="h6" component="h2">
+                <Typography variant="h6">
                   {`${movieDetail?.Title}`}
                 </Typography>
-                <Typography id="transition-modal-title" variant="h6" component="h2">
+                <Typography variant="h6">
                   {movieDetail?.Year}
                 </Typography>
               </Box>
@@ -57,22 +45,22 @@ const CustomModal = ({ isOpen, handleClose, imdbId }: ModalProps): ReactElement 
                 alt={movieDetail?.Title}
               />
 
-              <Typography sx={{ color: '#A8A8A8' }}>Plot</Typography>
+              <Typography sx={textColor}>Plot</Typography>
               <Typography>{movieDetail?.Plot}</Typography>
 
-              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Genre</Typography>
+              <Typography sx={{ ...textColor, ...textSpace }}>Genre</Typography>
               <Typography>{movieDetail?.Genre}</Typography>
 
-              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Cast</Typography>
+              <Typography sx={{ ...textColor, ...textSpace }}>Cast</Typography>
               <Typography> {movieDetail?.Actors}</Typography>
 
-              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Release Date</Typography>
+              <Typography sx={{ ...textColor, ...textSpace }}>Release Date</Typography>
               <Typography>{movieDetail?.Released}</Typography>
 
-              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>Awards</Typography>
+              <Typography sx={{ ...textColor, ...textSpace }}>Awards</Typography>
               <Typography>{movieDetail?.Awards}</Typography>
 
-              <Typography sx={{ color: '#A8A8A8', marginTop: '1rem' }}>IMDB Rating</Typography>
+              <Typography sx={{ ...textColor, ...textSpace }}>IMDB Rating</Typography>
               <Typography>{movieDetail?.imdbRating}</Typography>
             </Box>
           )}
