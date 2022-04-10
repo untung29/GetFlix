@@ -15,7 +15,7 @@ const LogoStyle = styled.h1`
   display: inline;
 `;
 
-export const Logo = ({ children }: { children: React.ReactChildren }) => (
+export const Logo = ({ children }: { children: React.ReactChildren | string }) => (
   <Link to="/">
     <LogoStyle>{children}</LogoStyle>
   </Link>
