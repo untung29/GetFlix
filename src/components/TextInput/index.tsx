@@ -1,6 +1,7 @@
 import { IconButton, TextField } from '@mui/material';
 import React, { ReactElement } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
+import textInputStyle from './TextInput.styles';
 
 interface TextInputProps {
   label: string;
@@ -16,7 +17,7 @@ const TextInput = ({ value, label, isLanding, onEnter, onChange }: TextInputProp
     onChange={onChange}
     label={label}
     variant="filled"
-    style={{ backgroundColor: 'white', borderRadius: '1rem', marginTop: '0.5rem' }}
+    sx={textInputStyle.inputStyle}
     fullWidth={isLanding}
     InputProps={{
       disableUnderline: true,

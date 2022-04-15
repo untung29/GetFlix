@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
+
+// Components
 import CustomModal from 'components/CustomModal';
-import { CircularProgress, Grid } from '@mui/material';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
 import CustomCard from 'components/CustomCard';
 import Logo from 'components/Logo';
 import TextInput from 'components/TextInput';
+
+// Hooks
 import useGetMovies from 'hooks/useGetMovies';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { SearchResultContainer, TopContainer } from './SearchResultPage.styled';
+
+// Styles
+import searchResultPageStyle from './SearchResultPage.styles';
 
 const SearchResultPage = () => {
   const [title, setTitle] = useState('');
@@ -30,75 +35,87 @@ const SearchResultPage = () => {
     setSelectedImdbId(id);
   };
 
-  const { data, fetching, isLoading, hasNextPage, fetchNextPage, isFetching } = useGetMovies(searchParams.get('t'));
+  const { data, fetching, isLoading, hasNextPage, fetchNextPage, isFetching, totalData } = useGetMovies(searchParams.get('t'));
   const onSearchTitle = () => {
     navigate({ pathname: '/search', search: `?t=${title}` });
     fetching(true);
   };
 
   useEffect(() => {
+    // If the query params t (title) is not empty then fetch data
     if (searchParams.get('t')) {
       // Set the title based on the params
       fetching(true);
+    } else {
+      // Do something
+      // Return back the user to the page?
     }
   }, []);
 
-  const totalData = data?.pages.reduce((acc, totalSearches) => {
-    if (totalSearches) {
-      return acc + totalSearches?.searchResults.length;
+  const searchResultRendering = (): ReactNode => {
+    if (isLoading || (isFetching && totalData === 0)) {
+      return (
+        <Box sx={{ ...searchResultPageStyle.centeredPosition, ...searchResultPageStyle.fullHeight }}>
+          <CircularProgress color="info" />
+        </Box>
+      );
     }
-    return acc;
-  }, 0);
+    if (totalData === 0) {
+      return (
+        <Typography variant="h5" sx={{ color: 'white' }}>
+          No result found
+        </Typography>
+      );
+    }
 
-  console.log(isFetching);
+    return (
+      <InfiniteScroll
+        hasMore={hasNextPage}
+        next={fetchNextPage}
+        dataLength={totalData}
+        loader={
+          <Box sx={{ ...searchResultPageStyle.centeredPosition, ...searchResultPageStyle.scrollLoadingHeight }}>
+            <CircularProgress color="info" />
+          </Box>
+        }
+      >
+        <Grid container spacing={2}>
+          {data?.pages.map(page =>
+            page?.searchResults.map(movie => (
+              <Grid item lg={2} md={3} sm={6} xs={12}>
+                <CustomCard
+                  onOpenDetailModal={onOpenDetailModal}
+                  poster={movie?.Poster}
+                  title={movie?.Title}
+                  type={movie?.Type}
+                  year={movie?.Year}
+                  imdbId={movie?.imdbID}
+                  key={movie?.Title}
+                />
+              </Grid>
+            )),
+          )}
+        </Grid>
+      </InfiniteScroll>
+    );
+  };
 
   return (
-    <SearchResultContainer>
-      <TopContainer>
-        <Box sx={{ display: 'inline-block' }}>
+    <Box sx={searchResultPageStyle.searchResultContainer}>
+      <Box sx={searchResultPageStyle.topContainer}>
+        <Box sx={searchResultPageStyle.logoPosition}>
           <Logo>Getflix</Logo>
         </Box>
         <TextInput key="1" value={title} onChange={onSetTitle} onEnter={onSearchTitle} label="Search your movie" isLanding={false} />
-      </TopContainer>
-      <Box sx={{ padding: '2rem 3rem' }}>
-        {isLoading || (isFetching && data?.pages.length === 0) ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <CircularProgress color="info" />
-          </Box>
-        ) : (
-          <InfiniteScroll
-            hasMore={hasNextPage}
-            next={fetchNextPage}
-            dataLength={totalData || 0}
-            loader={
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 100 }}>
-                <CircularProgress color="info" />
-              </Box>
-            }
-            pullDownToRefreshThreshold={50}
-          >
-            <Grid container spacing={2}>
-              {data?.pages.map(page =>
-                page?.searchResults.map(movie => (
-                  <Grid item lg={2} md={3} sm={6} xs={12}>
-                    <CustomCard
-                      onOpenDetailModal={onOpenDetailModal}
-                      poster={movie?.Poster}
-                      title={movie?.Title}
-                      type={movie?.Type}
-                      year={movie?.Year}
-                      imdbId={movie?.imdbID}
-                      key={movie?.Title}
-                    />
-                  </Grid>
-                )),
-              )}
-            </Grid>
-          </InfiniteScroll>
-        )}
       </Box>
+
+      <Box sx={{ padding: '1rem 3rem', color: 'white' }}>
+        <Typography variant="h5">Search result for &quot;{searchParams.get('t')}&quot;</Typography>
+      </Box>
+
+      <Box sx={{ padding: '2rem 3rem' }}>{searchResultRendering()}</Box>
       <CustomModal imdbId={selectedImdbId} isOpen={openDetailModal} handleClose={onCloseDetailModal} />
-    </SearchResultContainer>
+    </Box>
   );
 };
 

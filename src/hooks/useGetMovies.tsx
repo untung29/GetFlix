@@ -26,6 +26,7 @@ const useGetMovies = (
   hasNextPage: boolean;
   fetchNextPage: () => void;
   isFetching: boolean;
+  totalData: number;
 } => {
   const [fetching, setFetching] = useState(false);
   const { data, isLoading, hasNextPage, fetchNextPage, isFetching } = useInfiniteQuery<MovieResponse | undefined>(
@@ -53,7 +54,22 @@ const useGetMovies = (
     },
   );
 
-  return { data, isLoading, fetching: setFetching, hasNextPage: hasNextPage || false, fetchNextPage, isFetching };
+  const totalData = data?.pages.reduce((acc, totalSearches) => {
+    if (totalSearches && totalSearches.totalPage) {
+      return acc + totalSearches?.searchResults.length;
+    }
+    return acc;
+  }, 0);
+
+  return {
+    data,
+    isLoading,
+    fetching: setFetching,
+    hasNextPage: hasNextPage || false,
+    fetchNextPage,
+    isFetching,
+    totalData: totalData || 0,
+  };
 };
 
 export default useGetMovies;
