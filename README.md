@@ -1,3 +1,8 @@
+## Public URL
+
+https://get-flix.vercel.app
+
+
 ## Installation
 
 npm install
