@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 // Components
 import CustomModal from 'components/CustomModal';
@@ -52,6 +52,28 @@ const SearchResultPage = () => {
     }
   }, []);
 
+  const movieList = useMemo<ReactNode>(() => {
+    if (data?.pages[0]?.searchResults !== undefined) {
+      return data?.pages.map(page =>
+        page?.searchResults.map(movie => (
+          <Grid item lg={2} md={3} sm={6} xs={12}>
+            <CustomCard
+              onOpenDetailModal={onOpenDetailModal}
+              poster={movie?.Poster}
+              title={movie?.Title}
+              type={movie?.Type}
+              year={movie?.Year}
+              imdbId={movie?.imdbID}
+              key={movie?.Title}
+            />
+          </Grid>
+        )),
+      );
+    }
+
+    return [];
+  }, [isFetching]);
+
   const searchResultRendering = (): ReactNode => {
     if (isLoading || (isFetching && totalData === 0)) {
       return (
@@ -80,21 +102,7 @@ const SearchResultPage = () => {
         }
       >
         <Grid container spacing={2}>
-          {data?.pages.map(page =>
-            page?.searchResults.map(movie => (
-              <Grid item lg={2} md={3} sm={6} xs={12}>
-                <CustomCard
-                  onOpenDetailModal={onOpenDetailModal}
-                  poster={movie?.Poster}
-                  title={movie?.Title}
-                  type={movie?.Type}
-                  year={movie?.Year}
-                  imdbId={movie?.imdbID}
-                  key={movie?.Title}
-                />
-              </Grid>
-            )),
-          )}
+          {movieList}
         </Grid>
       </InfiniteScroll>
     );
