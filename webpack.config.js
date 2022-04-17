@@ -8,6 +8,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.[fullhash].js',
+    publicPath: '/',
   },
   mode: process.env.NODE_ENV || 'development',
   resolve: {
