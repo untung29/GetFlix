@@ -56,7 +56,7 @@ const SearchResultPage = () => {
     if (data?.pages[0]?.searchResults !== undefined) {
       return data?.pages.map(page =>
         page?.searchResults.map(movie => (
-          <Grid item lg={2} md={3} sm={6} xs={12}>
+          <Grid item lg={2} md={3} sm={6} xs={12} key={movie.imdbID}>
             <CustomCard
               onOpenDetailModal={onOpenDetailModal}
               poster={movie?.Poster}
@@ -64,7 +64,6 @@ const SearchResultPage = () => {
               type={movie?.Type}
               year={movie?.Year}
               imdbId={movie?.imdbID}
-              key={movie?.Title}
             />
           </Grid>
         )),

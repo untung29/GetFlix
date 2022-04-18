@@ -18,7 +18,7 @@ interface CustomCardProps {
 }
 
 const CustomCard = ({ imdbId, poster, title, type, year, onOpenDetailModal }: CustomCardProps) => (
-  <Card sx={{ width: '100%' }}>
+  <Card sx={{ width: '100%' }} key={title}>
     <CardMedia component="img" height="250" image={poster === 'N/A' ? NoPoster : poster} alt={title} />
     <CardContent>
       <Typography variant="h6">{title}</Typography>
